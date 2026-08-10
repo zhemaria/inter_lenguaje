@@ -1,0 +1,772 @@
+<!DOCTYPE html>
+<!--
+  Mayúscula al inicio, punto al final: Práctica de oraciones (versión esencial)
+  Autor: José M. Fernández, ABE/ASE Math Master Teacher,
+         Harry S. Truman College — City Colleges of Chicago
+  Licencia: Creative Commons Atribución-NoComercial-CompartirIgual 4.0 Internacional
+            (CC BY-NC-SA 4.0) — https://creativecommons.org/licenses/by-nc-sa/4.0/deed.es
+-->
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mayúscula al inicio, punto al final: Práctica de oraciones</title>
+<meta name="author" content="José M. Fernández, ABE/ASE Math Master Teacher, Harry S. Truman College — City Colleges of Chicago">
+<meta name="license" content="CC BY-NC-SA 4.0">
+<meta name="description" content="Práctica interactiva de escritura para teléfono: colocar la mayúscula inicial y el punto final en oraciones simples. Artes del Lenguaje, Nivel 1.">
+<link rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.es">
+<style>
+  :root{
+    --tinta:        #1f2937;
+    --tinta-suave:  #555555;
+    --principal:    #0f766e;
+    --principal-osc:#134e4a;
+    --principal-cl: #ccfbf1;
+    --fondo:        #f8fafc;
+    --borde:        #cbd5e1;
+    --error-fondo:  #fee2e2;
+    --error-tinta:  #7f1d1d;
+    --error-linea:  #b91c1c;
+    --exito-fondo:  #dcfce7;
+    --exito-tinta:  #14532d;
+    --aviso-fondo:  #fef3c7;
+    --aviso-tinta:  #5c3900;
+    --texto-base:   1.2rem;
+  }
+
+  *{ box-sizing: border-box; }
+
+  body{
+    margin: 0;
+    background: var(--fondo);
+    color: var(--tinta);
+    font-family: "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    font-size: 100%;
+    line-height: 1.6;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  .marco{
+    max-width: 700px;
+    margin: 0 auto;
+    padding: 0 .9rem 4rem;
+  }
+
+  header.principal{
+    background: var(--principal-osc);
+    color: #ffffff;
+    padding: 1.1rem .9rem;
+  }
+  header.principal .marco{ padding: 0; }
+  header.principal h1{
+    margin: 0;
+    font-size: 1.25rem;
+    line-height: 1.35;
+    color: #ffffff;
+  }
+
+  /* ----- Indicador de avance ----- */
+  .avance{ margin: 1rem 0 .25rem; }
+  .avance .texto{
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--principal-osc);
+    margin: 0 0 .4rem;
+  }
+  .barra-avance{
+    height: .6rem;
+    background: #e2e8f0;
+    border-radius: 999px;
+    overflow: hidden;
+  }
+  .barra-avance .relleno{
+    height: 100%;
+    background: var(--principal);
+    width: 0%;
+  }
+
+  /* ----- Instrucción ----- */
+  .instruccion{
+    background: var(--principal-cl);
+    border-left: 6px solid var(--principal-osc);
+    border-radius: 8px;
+    padding: .9rem 1rem;
+    margin: 1rem 0;
+  }
+  .instruccion h2{
+    margin: 0 0 .4rem;
+    font-size: 1.05rem;
+    color: var(--principal-osc);
+  }
+  .instruccion p{ margin: 0; font-size: 1.02rem; }
+
+  .titulo-parrafo{
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--principal-osc);
+    margin: 1.4rem 0 .5rem;
+  }
+
+  textarea#editor{
+    width: 100%;
+    min-height: 13rem;
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: var(--texto-base);
+    line-height: 2;
+    padding: 1rem;
+    border: 2px solid var(--borde);
+    border-radius: 10px;
+    color: var(--tinta);
+    background: #ffffff;
+    resize: vertical;
+  }
+
+  /* ----- Botones ----- */
+  button{
+    font-family: inherit;
+    font-size: 1.05rem;
+    font-weight: 700;
+    min-height: 3.25rem;
+    padding: .75rem 1.1rem;
+    border-radius: 10px;
+    border: 2px solid var(--principal-osc);
+    background: #ffffff;
+    color: var(--principal-osc);
+    cursor: pointer;
+    line-height: 1.25;
+  }
+  button.grande{
+    display: block;
+    width: 100%;
+    margin-top: 1rem;
+    font-size: 1.15rem;
+    min-height: 3.6rem;
+  }
+  button.primario{
+    background: var(--principal-osc);
+    color: #ffffff;
+  }
+  button.secundario{
+    background: #ffffff;
+    color: var(--principal-osc);
+    border-color: var(--principal-osc);
+    font-size: 1.05rem;
+    min-height: 3.25rem;
+    margin-top: .6rem;
+  }
+  button.primario:hover{ background: var(--principal); }
+  button:hover{ background: var(--principal-cl); }
+  button.primario:hover{ background: var(--principal); }
+  button:focus-visible,
+  textarea:focus-visible,
+  select:focus-visible{
+    outline: 3px solid #b45309;
+    outline-offset: 2px;
+  }
+
+  /* ----- Panel de opciones ----- */
+  .zona-opciones{ margin-top: 1.5rem; }
+  button.abre-opciones{
+    width: 100%;
+    background: #ffffff;
+    border-style: dashed;
+    color: var(--principal-osc);
+    font-size: 1rem;
+  }
+  .panel-opciones{
+    border: 2px solid var(--borde);
+    border-top: none;
+    border-radius: 0 0 10px 10px;
+    padding: 1rem;
+    background: #ffffff;
+  }
+  .panel-opciones .fila{
+    display: flex;
+    flex-wrap: wrap;
+    gap: .6rem;
+    margin-bottom: .8rem;
+  }
+  .panel-opciones .fila:last-child{ margin-bottom: 0; }
+  .panel-opciones .rotulo{
+    width: 100%;
+    font-size: .95rem;
+    font-weight: 700;
+    color: var(--tinta-suave);
+    margin-bottom: .1rem;
+  }
+  .panel-opciones button{ flex: 1 1 auto; font-size: 1rem; }
+  select{
+    flex: 1 1 100%;
+    font-family: inherit;
+    font-size: 1.05rem;
+    min-height: 3.25rem;
+    padding: .6rem;
+    border-radius: 10px;
+    border: 2px solid var(--borde);
+    background: #ffffff;
+    color: var(--tinta);
+  }
+
+  .pista{
+    background: var(--aviso-fondo);
+    border-left: 6px solid var(--aviso-tinta);
+    border-radius: 8px;
+    padding: .85rem 1rem;
+    margin-top: .9rem;
+    color: var(--aviso-tinta);
+    font-weight: 700;
+  }
+
+  /* ----- Resultado ----- */
+  .resultado{ margin-top: 1.5rem; }
+  .aviso{
+    padding: 1rem 1.1rem;
+    border-radius: 10px;
+    font-weight: 700;
+    margin-bottom: 1rem;
+  }
+  .aviso p{ margin: 0 0 .4rem; }
+  .aviso p:last-child{ margin-bottom: 0; }
+  .aviso.exito{ background: var(--exito-fondo); color: var(--exito-tinta); border-left: 6px solid var(--exito-tinta); }
+  .aviso.fallo{ background: var(--error-fondo); color: var(--error-tinta); border-left: 6px solid var(--error-linea); }
+  .aviso.alerta{ background: var(--aviso-fondo); color: var(--aviso-tinta); border-left: 6px solid var(--aviso-tinta); }
+
+  h2.seccion{
+    font-size: 1.1rem;
+    color: var(--principal-osc);
+    margin: 1.2rem 0 .6rem;
+  }
+
+  .marcador{
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: var(--texto-base);
+    line-height: 2.5;
+    background: #ffffff;
+    border: 2px solid var(--borde);
+    border-radius: 10px;
+    padding: 1rem;
+  }
+  .marcador .mal{
+    background: var(--error-fondo);
+    color: var(--error-tinta);
+    border-bottom: 3px solid var(--error-linea);
+    border-radius: 4px 4px 0 0;
+    padding: .1rem .25rem;
+    font-weight: 700;
+  }
+  .marcador .bien{
+    background: var(--exito-fondo);
+    color: var(--exito-tinta);
+    border-bottom: 3px solid var(--exito-tinta);
+    border-radius: 4px 4px 0 0;
+    padding: .1rem .25rem;
+  }
+  .indice{
+    font-size: .78em;
+    font-weight: 700;
+    vertical-align: super;
+    margin-left: .1rem;
+  }
+
+  .leyenda{
+    display: flex;
+    flex-wrap: wrap;
+    gap: .9rem;
+    margin-top: .8rem;
+    font-size: .95rem;
+    color: var(--tinta-suave);
+  }
+  .leyenda .muestra{
+    display: inline-block;
+    padding: .1rem .4rem;
+    border-radius: 4px;
+    font-weight: 700;
+    margin-right: .25rem;
+  }
+  .leyenda .m-mal{ background: var(--error-fondo); color: var(--error-tinta); border-bottom: 3px solid var(--error-linea); }
+  .leyenda .m-bien{ background: var(--exito-fondo); color: var(--exito-tinta); border-bottom: 3px solid var(--exito-tinta); }
+
+  ol.lista-errores{ margin: .6rem 0 0; padding-left: 1.4rem; }
+  ol.lista-errores li{ margin-bottom: .6rem; font-size: 1.02rem; }
+  ol.lista-errores .tipo{ font-weight: 700; color: var(--error-tinta); }
+  ol.lista-errores .cita{
+    font-family: Georgia, "Times New Roman", serif;
+    background: #f1f5f9;
+    padding: 0 .3rem;
+    border-radius: 4px;
+  }
+
+  .solucion{
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: var(--texto-base);
+    line-height: 2.1;
+    background: var(--principal-cl);
+    border-left: 6px solid var(--principal-osc);
+    border-radius: 10px;
+    padding: 1rem;
+    color: var(--tinta);
+  }
+  .solucion strong{ color: var(--principal-osc); }
+
+  .oculto{ display: none; }
+
+  .sr-solo{
+    position: absolute;
+    width: 1px; height: 1px;
+    padding: 0; margin: -1px;
+    overflow: hidden;
+    clip: rect(0,0,0,0);
+    white-space: nowrap;
+    border: 0;
+  }
+
+  footer.pie{
+    border-top: 3px solid var(--borde);
+    margin-top: 2.5rem;
+    padding: 1.3rem .9rem;
+    font-size: .9rem;
+    color: var(--tinta-suave);
+    text-align: center;
+    background: #ffffff;
+  }
+  footer.pie a{ color: var(--principal-osc); }
+  footer.pie p{ margin: .3rem 0; }
+</style>
+</head>
+<body>
+
+<header class="principal">
+  <div class="marco">
+    <h1>Mayúscula al inicio, punto al final</h1>
+  </div>
+</header>
+
+<main class="marco">
+
+  <div class="avance">
+    <p class="texto" id="avance-texto"></p>
+    <div class="barra-avance" role="progressbar" id="barra" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" aria-label="Párrafos completados">
+      <div class="relleno" id="relleno"></div>
+    </div>
+  </div>
+
+  <section class="instruccion" aria-labelledby="tit-instruccion">
+    <h2 id="tit-instruccion">Qué debe hacer</h2>
+    <p>Escriba con mayúscula la primera letra de cada oración y coloque un punto al final de cada una. No cambie las palabras.</p>
+  </section>
+
+  <h2 class="titulo-parrafo" id="titulo-parrafo"></h2>
+
+  <textarea id="editor" spellcheck="false" autocomplete="off" autocapitalize="off"></textarea>
+
+  <div class="pista oculto" id="pista" role="note"></div>
+
+  <button type="button" class="grande primario" id="btn-revisar">Finalizar y revisar</button>
+
+  <section class="resultado" id="resultado" aria-live="polite" aria-atomic="true"></section>
+
+  <div class="zona-opciones">
+    <button type="button" class="abre-opciones" id="btn-opciones" aria-expanded="false" aria-controls="panel-opciones">&#43; Opciones</button>
+    <div class="panel-opciones oculto" id="panel-opciones">
+      <div class="fila">
+        <span class="rotulo">Para leer y escuchar</span>
+        <button type="button" id="btn-audio">&#9654; Escuchar</button>
+        <button type="button" id="btn-pista">Pista</button>
+      </div>
+      <div class="fila">
+        <span class="rotulo">Tamaño de la letra</span>
+        <button type="button" id="btn-menos" aria-label="Disminuir el tamaño de la letra">A&#8722;</button>
+        <button type="button" id="btn-mas" aria-label="Aumentar el tamaño de la letra">A&#43;</button>
+      </div>
+      <div class="fila">
+        <span class="rotulo">Volver a empezar o comprobar</span>
+        <button type="button" id="btn-reiniciar">Borrar mis marcas</button>
+        <button type="button" id="btn-solucion">Ver la solución</button>
+      </div>
+      <div class="fila">
+        <span class="rotulo" id="et-selector">Ir a otro párrafo</span>
+        <select id="selector" aria-labelledby="et-selector"></select>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<footer class="pie">
+  <p>José M. Fernández, ABE/ASE Math Master Teacher, Harry S. Truman College — City Colleges of Chicago</p>
+  <p>Esta obra está bajo una licencia
+    <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.es" target="_blank" rel="license noopener">Creative Commons Atribución-NoComercial-CompartirIgual 4.0 Internacional (CC BY-NC-SA 4.0)</a>.
+  </p>
+</footer>
+
+<script>
+"use strict";
+
+/* =========================================================
+   BANCO DE PÁRRAFOS
+   Se escriben CORRECTAMENTE puntuados; el programa genera
+   solo la versión de práctica (sin mayúsculas ni puntos).
+   ========================================================= */
+var PARRAFOS = [
+  { titulo: "La huerta de la escuela",
+    correcto: "Los niños siembran una huerta en la escuela. Cada mañana riegan las plantas con cuidado. El sol ayuda a que las hojas crezcan. La maestra revisa el trabajo del grupo. Todos esperan la primera cosecha." },
+
+  { titulo: "El desayuno en familia",
+    correcto: "Mi familia desayuna muy temprano. Mi madre prepara café con leche. Mi hermano corta la fruta en trozos. Yo pongo los platos en la mesa. Después todos lavamos la loza. El desayuno nos da energía para el día." },
+
+  { titulo: "El viaje en autobús",
+    correcto: "Espero el autobús en la esquina. El viaje dura media hora. Siempre llevo un libro para leer. La ventana me deja ver la ciudad. Bajo cerca de mi trabajo." },
+
+  { titulo: "La biblioteca del barrio",
+    correcto: "La biblioteca abre a las nueve. Los estantes guardan miles de libros. Un cartel pide silencio a los visitantes. Puedo pedir tres libros prestados. Devuelvo cada libro en dos semanas. Ese lugar me ayuda a estudiar." },
+
+  { titulo: "El perro de la casa",
+    correcto: "Mi perro duerme junto a la puerta. Come dos veces al día. Sale al parque todas las tardes. Ladra cuando escucha un ruido extraño. Mi familia lo cuida con cariño." },
+
+  { titulo: "Un día de lluvia",
+    correcto: "Hoy llueve sobre la ciudad. Las calles se llenan de charcos. La gente camina con paraguas. Los carros avanzan despacio. El aire queda fresco y limpio. Mañana volverá el sol." },
+
+  { titulo: "El trabajo en la cocina",
+    correcto: "Trabajo en la cocina de un restaurante. Llego antes de las siete. Preparo las verduras para el almuerzo. El cocinero revisa cada plato. Salimos cuando termina el turno." },
+
+  { titulo: "La clase de la tarde",
+    correcto: "La clase empieza a las seis de la tarde. La maestra explica las fracciones en la pizarra. Los estudiantes resuelven ejercicios en parejas. Nadie sale del salón sin preguntar. Al final repasamos los errores más comunes." },
+
+  { titulo: "El mercado del sábado",
+    correcto: "El mercado abre los sábados. Los puestos venden frutas y verduras frescas. Muchas personas llegan muy temprano. Los precios bajan al final del día. Siempre regreso con la bolsa llena." },
+
+  { titulo: "La caminata diaria",
+    correcto: "Camino treinta minutos cada día. Salgo de casa después de la cena. Recorro el mismo camino del parque. El ejercicio mejora mi descanso. Ahora subo las escaleras sin cansancio." },
+
+  { titulo: "La computadora para estudiar",
+    correcto: "Uso la computadora para estudiar. La enciendo apenas llego a casa. Busco videos sobre el tema de la clase. Guardo mis tareas en una carpeta. Apago el equipo antes de dormir." },
+
+  { titulo: "El día de descanso",
+    correcto: "El domingo descanso en casa. Duermo una hora más de lo normal. Preparo un almuerzo sencillo para todos. Por la tarde llamo a mi familia. La noche llega tranquila y silenciosa." }
+];
+
+/* =========================================================
+   ANÁLISIS
+   ========================================================= */
+var SIGNOS = ".,;:!?\u00BF\u00A1";
+
+function tokenizar(texto){
+  var re = /[^\s.,;:!?\u00BF\u00A1]+|[.,;:!?\u00BF\u00A1]/g;
+  var lista = [], m;
+  while ((m = re.exec(texto)) !== null){ lista.push(m[0]); }
+  return lista;
+}
+
+function agrupar(texto){
+  var tokens = tokenizar(texto);
+  var palabras = [];
+  for (var i = 0; i < tokens.length; i++){
+    var t = tokens[i];
+    if (t.length === 1 && SIGNOS.indexOf(t) !== -1){
+      if (palabras.length > 0){ palabras[palabras.length - 1].signos += t; }
+    } else {
+      palabras.push({ texto: t, signos: "" });
+    }
+  }
+  return palabras;
+}
+
+function empiezaMayuscula(p){
+  var c = p.charAt(0);
+  return c !== c.toLowerCase() && c === c.toUpperCase();
+}
+function bajarInicial(p){ return p.charAt(0).toLowerCase() + p.slice(1); }
+
+function construirModelo(correcto){
+  var g = agrupar(correcto), modelo = [];
+  for (var i = 0; i < g.length; i++){
+    modelo.push({
+      base: g[i].texto,
+      baseMin: g[i].texto.toLowerCase(),
+      mayuscula: empiezaMayuscula(g[i].texto),
+      punto: g[i].signos.indexOf(".") !== -1
+    });
+  }
+  return modelo;
+}
+function generarPractica(modelo){
+  var s = [];
+  for (var i = 0; i < modelo.length; i++){ s.push(bajarInicial(modelo[i].base)); }
+  return s.join(" ");
+}
+function contarOraciones(modelo){
+  var n = 0;
+  for (var i = 0; i < modelo.length; i++){ if (modelo[i].punto){ n++; } }
+  return n;
+}
+
+/* =========================================================
+   ESTADO
+   ========================================================= */
+var indiceActual = 0, modelos = [], practicas = [], logrados = [], tamano = 1.2;
+
+for (var k = 0; k < PARRAFOS.length; k++){
+  var mod = construirModelo(PARRAFOS[k].correcto);
+  modelos.push(mod);
+  practicas.push(generarPractica(mod));
+  logrados.push(false);
+}
+
+var elEditor    = document.getElementById("editor");
+var elSelector  = document.getElementById("selector");
+var elTitulo    = document.getElementById("titulo-parrafo");
+var elResultado = document.getElementById("resultado");
+var elPista     = document.getElementById("pista");
+var elAvance    = document.getElementById("avance-texto");
+var elRelleno   = document.getElementById("relleno");
+var elBarra     = document.getElementById("barra");
+
+/* =========================================================
+   INTERFAZ
+   ========================================================= */
+function llenarSelector(){
+  var html = "";
+  for (var i = 0; i < PARRAFOS.length; i++){
+    html += '<option value="' + i + '">' + (i + 1) + ". " + PARRAFOS[i].titulo + "</option>";
+  }
+  elSelector.innerHTML = html;
+}
+
+function pintarAvance(){
+  var hechos = 0;
+  for (var i = 0; i < logrados.length; i++){ if (logrados[i]){ hechos++; } }
+  var pct = Math.round((hechos / PARRAFOS.length) * 100);
+  elAvance.textContent = "Párrafo " + (indiceActual + 1) + " de " + PARRAFOS.length +
+                         "  \u00B7  " + hechos + " resueltos sin errores";
+  elRelleno.style.width = pct + "%";
+  elBarra.setAttribute("aria-valuenow", String(pct));
+}
+
+function cargarParrafo(i){
+  indiceActual = i;
+  elSelector.value = String(i);
+  elTitulo.textContent = PARRAFOS[i].titulo;
+  elEditor.value = practicas[i];
+  elEditor.setAttribute("aria-label", "Área de escritura. Párrafo " + (i + 1) + ": " + PARRAFOS[i].titulo);
+  elResultado.innerHTML = "";
+  elPista.classList.add("oculto");
+  pintarAvance();
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+function escapar(t){
+  return String(t).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+}
+function ordinal(n){
+  var nombres = ["primera","segunda","tercera","cuarta","quinta","sexta","séptima","octava","novena","décima"];
+  return nombres[n - 1] || ("número " + n);
+}
+
+/* =========================================================
+   EVALUACIÓN
+   ========================================================= */
+function revisar(){
+  var modelo = modelos[indiceActual];
+  var alumno = agrupar(elEditor.value);
+
+  var alterado = false, posicion = -1;
+  if (alumno.length !== modelo.length){
+    alterado = true;
+    posicion = Math.min(alumno.length, modelo.length) + 1;
+  } else {
+    for (var v = 0; v < modelo.length; v++){
+      if (alumno[v].texto.toLowerCase() !== modelo[v].baseMin){ alterado = true; posicion = v + 1; break; }
+    }
+  }
+
+  if (alterado){
+    elResultado.innerHTML =
+      '<div class="aviso alerta">' +
+      "<p>El texto cambió. Alguna palabra se borró, se cambió o se agregó (cerca de la palabra número " + posicion + ").</p>" +
+      "<p>En esta práctica solo se agregan mayúsculas y puntos.</p></div>" +
+      '<button type="button" class="grande primario" id="btn-restaurar">Recuperar el texto original</button>';
+    document.getElementById("btn-restaurar").addEventListener("click", function(){
+      elEditor.value = practicas[indiceActual];
+      elResultado.innerHTML = "";
+      elEditor.focus();
+    });
+    elResultado.scrollIntoView({ block: "nearest", behavior: "smooth" });
+    return;
+  }
+
+  var errores = [], marcas = [], total = 0, aciertos = 0, numOracion = 1;
+
+  for (var i = 0; i < modelo.length; i++){
+    var esp = modelo[i], alu = alumno[i];
+    var tieneMay = empiezaMayuscula(alu.texto);
+    var tienePunto = alu.signos.indexOf(".") !== -1;
+    var otros = alu.signos.replace(/\./g, "");
+    var fallo = false;
+
+    if (esp.mayuscula){
+      total++;
+      if (tieneMay){ aciertos++; }
+      else {
+        fallo = true;
+        errores.push({ tipo: "Falta la mayúscula",
+          detalle: "Aquí comienza la " + ordinal(numOracion) + " oración. La primera letra va en mayúscula.",
+          cita: alu.texto });
+      }
+    } else if (tieneMay){
+      fallo = true;
+      errores.push({ tipo: "Mayúscula innecesaria",
+        detalle: "Esta palabra está dentro de una oración. No comienza oración, así que va en minúscula.",
+        cita: alu.texto });
+    }
+
+    if (esp.punto){
+      total++;
+      if (tienePunto){ aciertos++; }
+      else {
+        fallo = true;
+        errores.push({ tipo: "Falta el punto",
+          detalle: "Aquí termina la " + ordinal(numOracion) + " oración. Debe cerrarse con un punto.",
+          cita: alu.texto });
+      }
+      numOracion++;
+    } else if (tienePunto){
+      fallo = true;
+      errores.push({ tipo: "Punto innecesario",
+        detalle: "La idea continúa después de esta palabra. Todavía no termina la oración.",
+        cita: alu.texto + "." });
+    }
+
+    if (otros.length > 0){
+      fallo = true;
+      errores.push({ tipo: "Signo no requerido",
+        detalle: "En esta práctica solo se usa el punto.",
+        cita: alu.texto + otros });
+    }
+
+    var clase = fallo ? "mal" : ((esp.mayuscula || esp.punto) ? "bien" : "");
+    var idx = fallo ? '<span class="indice">' + errores.length + "</span>" : "";
+    var lectura = fallo ? '<span class="sr-solo"> (error número ' + errores.length + ") </span>" : "";
+    marcas.push('<span class="' + clase + '">' + escapar(alu.texto + alu.signos) + lectura + "</span>" + idx);
+  }
+
+  var perfecto = (errores.length === 0);
+  if (perfecto){ logrados[indiceActual] = true; }
+  pintarAvance();
+
+  var html = "";
+  if (perfecto){
+    var n = contarOraciones(modelo);
+    html += '<div class="aviso exito"><p>Muy bien. Marcó correctamente las ' + n +
+            " oraciones del párrafo: " + n + " mayúsculas y " + n + " puntos.</p></div>";
+  } else {
+    html += '<div class="aviso fallo"><p>Resultado: ' + aciertos + " de " + total + " marcas correctas.</p>" +
+            "<p>Revise las palabras señaladas y corrija su texto.</p></div>";
+  }
+
+  html += '<h2 class="seccion">Su texto revisado</h2><div class="marcador">' + marcas.join(" ") + "</div>";
+  html += '<div class="leyenda">' +
+          '<span><span class="muestra m-bien">palabra</span> marca correcta</span>' +
+          '<span><span class="muestra m-mal">palabra</span> marca con error</span></div>';
+
+  if (!perfecto){
+    html += '<h2 class="seccion">Qué corregir</h2><ol class="lista-errores">';
+    for (var e = 0; e < errores.length; e++){
+      html += '<li><span class="tipo">' + errores[e].tipo + '</span> en <span class="cita">' +
+              escapar(errores[e].cita) + "</span>. " + errores[e].detalle + "</li>";
+    }
+    html += "</ol>";
+    html += '<button type="button" class="grande primario" id="btn-volver">Volver a mi texto y corregir</button>';
+    if (indiceActual < PARRAFOS.length - 1){
+      html += '<button type="button" class="grande secundario" id="btn-continuar">Pasar al siguiente párrafo &#8594;</button>';
+    }
+  } else if (indiceActual < PARRAFOS.length - 1){
+    html += '<button type="button" class="grande primario" id="btn-continuar">Siguiente párrafo &#8594;</button>';
+  } else {
+    html += '<div class="aviso exito"><p>Terminó los ' + PARRAFOS.length +
+            " párrafos de la práctica. Puede repetir cualquiera desde el panel de opciones.</p></div>";
+  }
+
+  elResultado.innerHTML = html;
+
+  var bVolver = document.getElementById("btn-volver");
+  if (bVolver){
+    bVolver.addEventListener("click", function(){
+      elEditor.focus();
+      elEditor.scrollIntoView({ block: "center", behavior: "smooth" });
+    });
+  }
+  var bCont = document.getElementById("btn-continuar");
+  if (bCont){
+    bCont.addEventListener("click", function(){ cargarParrafo(indiceActual + 1); });
+  }
+
+  elResultado.scrollIntoView({ block: "nearest", behavior: "smooth" });
+}
+
+/* =========================================================
+   ACCIONES
+   ========================================================= */
+llenarSelector();
+cargarParrafo(0);
+
+document.getElementById("btn-revisar").addEventListener("click", revisar);
+
+var btnOpciones = document.getElementById("btn-opciones");
+var panel = document.getElementById("panel-opciones");
+btnOpciones.addEventListener("click", function(){
+  var abierto = panel.classList.toggle("oculto") === false;
+  this.setAttribute("aria-expanded", abierto ? "true" : "false");
+  this.innerHTML = abierto ? "&#8722; Ocultar opciones" : "&#43; Opciones";
+});
+
+elSelector.addEventListener("change", function(){ cargarParrafo(parseInt(this.value, 10)); });
+
+document.getElementById("btn-reiniciar").addEventListener("click", function(){
+  elEditor.value = practicas[indiceActual];
+  elResultado.innerHTML = "";
+  elEditor.focus();
+});
+
+document.getElementById("btn-solucion").addEventListener("click", function(){
+  var texto = PARRAFOS[indiceActual].correcto;
+  var resaltado = texto
+    .replace(/(^|\.\s+)([A-ZÁÉÍÓÚÑÜ])/g, function(t, antes, letra){ return antes + "<strong>" + letra + "</strong>"; })
+    .replace(/\./g, "<strong>.</strong>");
+  elResultado.innerHTML =
+    '<h2 class="seccion">Versión correcta</h2><div class="solucion"><p style="margin:0;">' + resaltado + "</p></div>";
+  elResultado.scrollIntoView({ block: "nearest", behavior: "smooth" });
+});
+
+document.getElementById("btn-pista").addEventListener("click", function(){
+  var n = contarOraciones(modelos[indiceActual]);
+  elPista.textContent = "Pista: este párrafo tiene " + n + " oraciones. Debe colocar " + n +
+                        " mayúsculas y " + n + " puntos.";
+  elPista.classList.remove("oculto");
+  elPista.scrollIntoView({ block: "nearest", behavior: "smooth" });
+});
+
+document.getElementById("btn-mas").addEventListener("click", function(){
+  tamano = Math.min(tamano + 0.12, 2.1);
+  document.documentElement.style.setProperty("--texto-base", tamano + "rem");
+});
+document.getElementById("btn-menos").addEventListener("click", function(){
+  tamano = Math.max(tamano - 0.12, 1.0);
+  document.documentElement.style.setProperty("--texto-base", tamano + "rem");
+});
+
+var btnAudio = document.getElementById("btn-audio");
+if (!("speechSynthesis" in window)){
+  btnAudio.disabled = true;
+  btnAudio.textContent = "Audio no disponible";
+} else {
+  btnAudio.addEventListener("click", function(){
+    window.speechSynthesis.cancel();
+    var v = new SpeechSynthesisUtterance(PARRAFOS[indiceActual].correcto);
+    v.lang = "es-ES";
+    v.rate = 0.85;
+    window.speechSynthesis.speak(v);
+  });
+}
+</script>
+</body>
+</html>

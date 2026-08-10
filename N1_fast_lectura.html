@@ -1,0 +1,1574 @@
+<!doctype html>
+<!--
+  N1_fast_lectura.html — Entrenador de lectura, Nivel 1 (ABE/ASE en español)
+  Lección 2.3 · Palabras de uso frecuente y fluidez inicial
+  © José M. Fernández, ABE/ASE Math Master Teacher,
+     Harry S. Truman College — City Colleges of Chicago.
+  Licencia Creative Commons Atribución-NoComercial-CompartirIgual 4.0 Internacional
+  (CC BY-NC-SA 4.0) — https://creativecommons.org/licenses/by-nc-sa/4.0/deed.es
+-->
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Entrenador de lectura · Nivel 1</title>
+    <meta name="description" content="Práctica de palabras de uso frecuente, señales cotidianas y lectura repetida para estudiantes de alfabetización en español, Nivel 1." />
+    <meta name="author" content="José M. Fernández, ABE/ASE Math Master Teacher, Harry S. Truman College — City Colleges of Chicago" />
+    <meta name="license" content="CC BY-NC-SA 4.0" />
+    <link rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.es" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet" />
+    <style>
+      :root {
+        --tinta: #1c2b26;
+        --tinta-suave: #55605b;
+        --papel: #f4f2eb;
+        --nube: #ffffff;
+        --verde: #0b6e4f;
+        --verde-oscuro: #084d38;
+        --verde-claro: #e3f0ea;
+        --ambar: #f5b301;
+        --ambar-texto: #5c3900;
+        --rojo: #b3261e;
+        --azul: #14508c;
+        --borde: #d7d3c6;
+        --foco: #0b6e4f;
+        --tam-lectura: 1.5rem;
+        --letra-señal: 'Archivo Black', 'Arial Black', Impact, sans-serif;
+        --letra-texto: 'Atkinson Hyperlegible', 'Verdana', 'Segoe UI', sans-serif;
+      }
+
+      * { box-sizing: border-box; }
+
+      [hidden] { display: none !important; }
+
+      html { scroll-behavior: smooth; }
+
+      body {
+        font-family: var(--letra-texto);
+        margin: 0;
+        padding: 12px;
+        background: var(--papel);
+        color: var(--tinta);
+        line-height: 1.6;
+        min-height: 100vh;
+      }
+
+      #app {
+        width: clamp(300px, 96%, 900px);
+        margin: 0 auto;
+        background: var(--nube);
+        border: 2px solid var(--borde);
+        border-radius: 14px;
+        overflow: hidden;
+      }
+
+      /* ─── ENCABEZADO ─── */
+      .cabecera {
+        background: var(--verde);
+        color: #ffffff;
+        padding: 24px 22px 20px;
+        border-bottom: 6px solid var(--ambar);
+      }
+      .cabecera .eyebrow {
+        font-size: 0.82rem;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        color: #ffffff;
+        margin: 0 0 6px;
+        font-weight: 700;
+      }
+      .cabecera h1 {
+        font-family: var(--letra-señal);
+        font-size: clamp(1.45rem, 5vw, 2.1rem);
+        line-height: 1.15;
+        margin: 0 0 8px;
+        color: #ffffff;
+        letter-spacing: 0.01em;
+      }
+      .cabecera p {
+        margin: 0;
+        font-size: clamp(0.92rem, 2.4vw, 1.02rem);
+        color: #ffffff;
+        max-width: 60ch;
+      }
+
+      /* ─── NAVEGACIÓN DE ESTACIONES ─── */
+      .estaciones {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 0;
+        background: var(--verde-claro);
+        border-bottom: 2px solid var(--borde);
+      }
+      .estacion-btn {
+        font-family: var(--letra-texto);
+        font-size: clamp(0.82rem, 2.2vw, 0.98rem);
+        font-weight: 700;
+        color: var(--verde-oscuro);
+        background: transparent;
+        border: none;
+        border-bottom: 5px solid transparent;
+        padding: 14px 6px 11px;
+        cursor: pointer;
+        line-height: 1.25;
+      }
+      .estacion-btn .num {
+        display: block;
+        font-family: var(--letra-señal);
+        font-size: 1.15rem;
+        color: var(--verde);
+      }
+      .estacion-btn:hover { background: #d5e8df; }
+      .estacion-btn[aria-selected='true'] {
+        background: var(--nube);
+        border-bottom-color: var(--ambar);
+        color: var(--tinta);
+      }
+
+      /* ─── PANELES ─── */
+      .panel { padding: 22px; }
+      .panel[hidden] { display: none; }
+
+      .panel h2 {
+        font-family: var(--letra-señal);
+        font-size: clamp(1.15rem, 3.4vw, 1.4rem);
+        margin: 0 0 6px;
+        color: var(--verde-oscuro);
+      }
+      .panel .intro {
+        margin: 0 0 18px;
+        color: var(--tinta-suave);
+        font-size: 0.98rem;
+        max-width: 62ch;
+      }
+      .sub-paso {
+        font-family: var(--letra-señal);
+        font-size: 1.02rem;
+        color: var(--verde-oscuro);
+        margin: 26px 0 6px;
+        padding-left: 12px;
+        border-left: 6px solid var(--ambar);
+      }
+
+      /* ─── CONTROLES ─── */
+      .controles {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        margin-bottom: 18px;
+      }
+      .campo {
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+        flex: 1 1 200px;
+        min-width: 0;
+      }
+      .campo .etiqueta {
+        font-size: 0.76rem;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--verde-oscuro);
+      }
+      select {
+        font-family: var(--letra-texto);
+        font-size: 1rem;
+        padding: 11px 12px;
+        border: 2px solid var(--borde);
+        border-radius: 8px;
+        background: var(--nube);
+        color: var(--tinta);
+        cursor: pointer;
+        width: 100%;
+      }
+      select:hover { border-color: var(--verde); }
+
+      .botonera {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-bottom: 18px;
+      }
+      button.accion {
+        font-family: var(--letra-texto);
+        font-size: 1rem;
+        font-weight: 700;
+        padding: 13px 20px;
+        border: 2px solid transparent;
+        border-radius: 8px;
+        cursor: pointer;
+        flex: 1 1 auto;
+        min-width: 120px;
+      }
+      .b-verde { background: var(--verde); color: #ffffff; }
+      .b-verde:hover { background: var(--verde-oscuro); }
+      .b-ambar { background: var(--ambar); color: var(--ambar-texto); }
+      .b-ambar:hover { background: #d99f00; }
+      .b-linea {
+        background: var(--nube);
+        color: var(--verde-oscuro);
+        border-color: var(--verde);
+      }
+      .b-linea:hover { background: var(--verde-claro); }
+      button:disabled { background: #e6e3da; color: #55605b; border-color: #e6e3da; cursor: not-allowed; }
+
+      :focus-visible {
+        outline: 4px solid var(--ambar);
+        outline-offset: 2px;
+      }
+
+      /* ─── TARJETA DE PALABRA (estación 1) ─── */
+      .tarjeta-palabra {
+        background: var(--nube);
+        border: 3px solid var(--verde);
+        border-radius: 12px;
+        min-height: 190px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 14px;
+        padding: 26px 18px;
+        text-align: center;
+      }
+      .tarjeta-palabra .palabra {
+        font-family: var(--letra-señal);
+        font-size: clamp(2.6rem, 13vw, 4.6rem);
+        line-height: 1;
+        color: var(--tinta);
+        letter-spacing: 0.01em;
+        word-break: break-word;
+      }
+      .tarjeta-palabra .pista {
+        font-size: 1rem;
+        color: var(--tinta-suave);
+        margin: 0;
+        max-width: 40ch;
+      }
+      .contador-palabras {
+        text-align: center;
+        font-weight: 700;
+        color: var(--verde-oscuro);
+        margin: 12px 0 0;
+        font-size: 0.95rem;
+      }
+
+      .galeria {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+        gap: 10px;
+        margin-top: 18px;
+      }
+      .ficha {
+        font-family: var(--letra-señal);
+        font-size: 1.3rem;
+        padding: 16px 6px;
+        background: var(--verde-claro);
+        border: 2px solid #b9d6c9;
+        border-radius: 10px;
+        color: var(--tinta);
+        cursor: pointer;
+        text-align: center;
+      }
+      .ficha:hover { background: #cfe6da; border-color: var(--verde); }
+      .ficha.dicha { background: var(--ambar); border-color: var(--ambar-texto); color: var(--ambar-texto); }
+
+      /* ─── ENCUENTRA LA PALABRA ─── */
+      .buscar-caja {
+        background: var(--verde-claro);
+        border: 2px solid #b9d6c9;
+        border-radius: 12px;
+        padding: 20px 18px;
+        margin-top: 20px;
+      }
+      .buscar-caja h3 {
+        margin: 0 0 10px;
+        font-family: var(--letra-señal);
+        font-size: 1.05rem;
+        color: var(--verde-oscuro);
+      }
+      .objetivo {
+        font-size: 1.15rem;
+        margin: 0 0 14px;
+        color: var(--tinta);
+      }
+      .objetivo strong {
+        font-family: var(--letra-señal);
+        font-size: 1.6rem;
+        color: var(--verde-oscuro);
+      }
+      .opciones-palabra {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+        gap: 10px;
+      }
+      .op-palabra {
+        font-family: var(--letra-señal);
+        font-size: 1.5rem;
+        padding: 20px 8px;
+        background: var(--nube);
+        border: 3px solid var(--borde);
+        border-radius: 10px;
+        cursor: pointer;
+        color: var(--tinta);
+      }
+      .op-palabra:hover { border-color: var(--verde); }
+      .op-palabra.bien { background: var(--verde); border-color: var(--verde-oscuro); color: #ffffff; }
+      .op-palabra.mal { background: #f6dedd; border-color: var(--rojo); color: #7a1a15; }
+      .marcador {
+        margin: 14px 0 0;
+        font-weight: 700;
+        color: var(--verde-oscuro);
+      }
+
+      /* ─── SEÑALES (estación 2) ─── */
+      .placa {
+        border-radius: 10px;
+        padding: 34px 20px;
+        text-align: center;
+        font-family: var(--letra-señal);
+        font-size: clamp(1.6rem, 8vw, 3rem);
+        line-height: 1.15;
+        letter-spacing: 0.02em;
+        border: 6px solid;
+        word-break: break-word;
+      }
+      .placa-verde { background: var(--verde); color: #ffffff; border-color: var(--verde-oscuro); }
+      .placa-roja { background: var(--rojo); color: #ffffff; border-color: #7a1a15; }
+      .placa-ambar { background: var(--ambar); color: var(--ambar-texto); border-color: var(--ambar-texto); }
+      .placa-azul { background: var(--azul); color: #ffffff; border-color: #0d3661; }
+      .placa-blanca { background: var(--nube); color: var(--tinta); border-color: var(--tinta); }
+
+      .lugar-señal {
+        text-align: center;
+        margin: 12px 0 18px;
+        color: var(--tinta-suave);
+        font-size: 0.95rem;
+      }
+      .opciones-señal { display: grid; gap: 10px; }
+      .op-señal {
+        font-family: var(--letra-texto);
+        font-size: 1.05rem;
+        text-align: left;
+        padding: 15px 16px;
+        background: var(--nube);
+        border: 3px solid var(--borde);
+        border-radius: 10px;
+        cursor: pointer;
+        color: var(--tinta);
+      }
+      .op-señal:hover { border-color: var(--verde); background: var(--verde-claro); }
+      .op-señal.bien { background: var(--verde); border-color: var(--verde-oscuro); color: #ffffff; }
+      .op-señal.mal { background: #f6dedd; border-color: var(--rojo); color: #7a1a15; }
+      .op-señal:disabled { cursor: default; }
+
+      /* ─── LECTURA (estación 3) ─── */
+      .ajuste-letra {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        flex: 0 0 auto;
+      }
+      .ajuste-letra button {
+        font-family: var(--letra-señal);
+        font-size: 1rem;
+        width: 46px;
+        height: 46px;
+        border-radius: 8px;
+        border: 2px solid var(--verde);
+        background: var(--nube);
+        color: var(--verde-oscuro);
+        cursor: pointer;
+      }
+      .ajuste-letra button:hover { background: var(--verde-claro); }
+
+      #texto {
+        border: 3px solid var(--borde);
+        border-radius: 12px;
+        padding: 24px 22px;
+        background: var(--nube);
+        font-size: var(--tam-lectura);
+        line-height: 2.05;
+        letter-spacing: 0.01em;
+        max-height: 46vh;
+        overflow-y: auto;
+      }
+      #texto .titulo-lectura {
+        font-family: var(--letra-señal);
+        font-size: 1.05rem;
+        color: var(--verde-oscuro);
+        border-bottom: 3px solid var(--ambar);
+        padding-bottom: 8px;
+        margin-bottom: 16px;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+      }
+      #texto p { margin: 0 0 14px; }
+      .word { padding: 1px 2px; border-radius: 4px; }
+      .word.leida { background: #fbf0d2; color: var(--tinta); }
+      .word.marcada {
+        background: var(--ambar);
+        color: var(--ambar-texto);
+        font-weight: 700;
+      }
+
+      /* ─── Caja de la guía de ritmo ─── */
+      .guia-caja {
+        background: var(--verde-claro);
+        border: 2px solid #b9d6c9;
+        border-radius: 12px;
+        padding: 18px 16px;
+        margin-bottom: 18px;
+      }
+      input[type='range'] {
+        width: 100%;
+        height: 38px;
+        accent-color: var(--verde);
+        cursor: pointer;
+        background: transparent;
+      }
+      .escala-vel {
+        display: flex;
+        justify-content: space-between;
+        font-size: 0.78rem;
+        font-weight: 700;
+        color: var(--tinta-suave);
+        margin: -6px 0 4px;
+      }
+      .lectura-vel {
+        margin: 4px 0 0;
+        font-family: var(--letra-señal);
+        font-size: 1.05rem;
+        color: var(--verde-oscuro);
+        line-height: 1.3;
+      }
+      .lectura-vel .detalle {
+        display: block;
+        font-family: var(--letra-texto);
+        font-weight: 400;
+        font-size: 0.92rem;
+        color: var(--tinta-suave);
+      }
+      .estado-guia {
+        margin: 12px 0 0;
+        color: var(--tinta-suave);
+        font-size: 0.95rem;
+        min-height: 1.5em;
+      }
+      .cuenta-atras {
+        font-family: var(--letra-señal);
+        font-size: 1.6rem;
+        color: var(--verde-oscuro);
+      }
+
+      .crono-caja {
+        margin-top: 18px;
+        background: var(--verde-claro);
+        border: 2px solid #b9d6c9;
+        border-radius: 12px;
+        padding: 18px;
+        text-align: center;
+      }
+      .crono {
+        font-family: var(--letra-señal);
+        font-size: clamp(2.2rem, 10vw, 3.2rem);
+        color: var(--verde-oscuro);
+        line-height: 1;
+        margin: 0 0 4px;
+      }
+      .crono-nota {
+        margin: 0 0 14px;
+        color: var(--tinta-suave);
+        font-size: 0.92rem;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 18px;
+        font-size: 0.98rem;
+      }
+      caption {
+        caption-side: top;
+        text-align: left;
+        font-weight: 700;
+        color: var(--verde-oscuro);
+        padding-bottom: 8px;
+      }
+      th, td {
+        border: 1px solid var(--borde);
+        padding: 10px 12px;
+        text-align: left;
+      }
+      thead th { background: var(--verde-claro); color: var(--verde-oscuro); }
+      tbody td:first-child { font-weight: 700; }
+
+      .aviso {
+        margin-top: 16px;
+        padding: 14px 16px;
+        background: #fff6dd;
+        border-left: 6px solid var(--ambar);
+        border-radius: 8px;
+        color: var(--ambar-texto);
+        font-weight: 700;
+      }
+      .aviso[hidden] { display: none; }
+
+      /* ─── PREGUNTAS ─── */
+      .preguntas {
+        margin-top: 22px;
+        border: 3px solid var(--verde);
+        border-radius: 12px;
+        padding: 20px 18px;
+        background: var(--nube);
+      }
+      .preguntas[hidden] { display: none; }
+      .preguntas h3 {
+        font-family: var(--letra-señal);
+        margin: 0 0 12px;
+        color: var(--verde-oscuro);
+        font-size: 1.05rem;
+      }
+      .bloque-preg { margin-bottom: 20px; }
+      .bloque-preg .enunciado {
+        font-weight: 700;
+        margin-bottom: 8px;
+        font-size: 1.05rem;
+      }
+      .op-preg {
+        display: block;
+        width: 100%;
+        text-align: left;
+        font-family: var(--letra-texto);
+        font-size: 1rem;
+        padding: 13px 15px;
+        margin-bottom: 8px;
+        background: var(--nube);
+        border: 2px solid var(--borde);
+        border-radius: 8px;
+        cursor: pointer;
+        color: var(--tinta);
+      }
+      .op-preg:hover:not(:disabled) { border-color: var(--verde); background: var(--verde-claro); }
+      .op-preg.elegida { border-color: var(--verde-oscuro); background: var(--verde-claro); font-weight: 700; }
+      .op-preg.bien { background: var(--verde); border-color: var(--verde-oscuro); color: #ffffff; }
+      .op-preg.mal { background: #f6dedd; border-color: var(--rojo); color: #7a1a15; }
+      .op-preg:disabled { cursor: default; }
+      .resultado {
+        margin-top: 12px;
+        padding: 14px 16px;
+        background: var(--verde-claro);
+        border-radius: 8px;
+        font-weight: 700;
+        color: var(--verde-oscuro);
+      }
+      .resultado[hidden] { display: none; }
+
+      /* ─── NOTA DOCENTE Y PIE ─── */
+      details.nota {
+        margin: 22px;
+        border: 2px solid var(--borde);
+        border-radius: 10px;
+        background: var(--papel);
+      }
+      details.nota > summary {
+        cursor: pointer;
+        padding: 14px 16px;
+        font-weight: 700;
+        color: var(--verde-oscuro);
+        list-style: none;
+      }
+      details.nota > summary::-webkit-details-marker { display: none; }
+      details.nota > summary::before { content: '▸ '; }
+      details.nota[open] > summary::before { content: '▾ '; }
+      details.nota .cuerpo { padding: 0 18px 16px; font-size: 0.96rem; }
+      details.nota ul { margin: 8px 0; padding-left: 22px; }
+      details.nota li { margin-bottom: 6px; }
+
+      .pie {
+        border-top: 2px solid var(--borde);
+        padding: 18px 22px 22px;
+        font-size: 0.85rem;
+        color: var(--tinta-suave);
+        text-align: center;
+      }
+      .pie a { color: var(--verde-oscuro); }
+
+      @media (max-width: 600px) {
+        body { padding: 6px; }
+        .panel { padding: 16px 14px; }
+        .cabecera { padding: 18px 14px 16px; }
+        #texto { padding: 18px 15px; max-height: 42vh; }
+        button.accion { min-width: 100%; }
+        .ajuste-letra { justify-content: center; width: 100%; }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        html { scroll-behavior: auto; }
+        * { transition: none !important; animation: none !important; }
+      }
+
+      @media print {
+        .estaciones, .botonera, .controles, .crono-caja { display: none; }
+      }
+    </style>
+  </head>
+
+  <body>
+    <div id="app">
+      <header class="cabecera">
+        <p class="eyebrow">Lección 2.3 · Nivel 1</p>
+        <h1>Entrenador de lectura: palabras de uso frecuente</h1>
+        <p>Practica las palabras que aparecen en casi todo lo que se lee, aprende las señales de la calle y lee el mismo texto varias veces para leer con más soltura. No hay prisa: aquí se aprende con calma.</p>
+      </header>
+
+      <div class="estaciones" role="tablist" aria-label="Estaciones de práctica">
+        <button class="estacion-btn" role="tab" id="tab-1" aria-controls="panel-1" aria-selected="true" type="button">
+          <span class="num" aria-hidden="true">1</span>
+          Palabras a simple vista
+        </button>
+        <button class="estacion-btn" role="tab" id="tab-2" aria-controls="panel-2" aria-selected="false" type="button">
+          <span class="num" aria-hidden="true">2</span>
+          Señales y carteles
+        </button>
+        <button class="estacion-btn" role="tab" id="tab-3" aria-controls="panel-3" aria-selected="false" type="button">
+          <span class="num" aria-hidden="true">3</span>
+          Lectura repetida
+        </button>
+      </div>
+
+      <!-- ══════════ ESTACIÓN 1 ══════════ -->
+      <section class="panel" id="panel-1" role="tabpanel" aria-labelledby="tab-1">
+        <h2>Palabras a simple vista</h2>
+        <p class="intro">
+          Estas cincuenta palabras aparecen en casi todos los textos en español. La meta es reconocerlas de inmediato, sin
+          deletrear. Lee cada palabra en voz alta cuando aparezca en la tarjeta.
+        </p>
+
+        <div class="controles">
+          <div class="campo">
+            <span class="etiqueta" id="et-grupo">Grupo de palabras</span>
+            <select id="selGrupo" aria-labelledby="et-grupo"></select>
+          </div>
+          <div class="campo">
+            <span class="etiqueta" id="et-ritmo">Tiempo por palabra</span>
+            <select id="selRitmo" aria-labelledby="et-ritmo">
+              <option value="4000">Muy despacio · 4 segundos</option>
+              <option value="3000" selected>Despacio · 3 segundos</option>
+              <option value="2000">Normal · 2 segundos</option>
+              <option value="1200">Rápido · 1 segundo</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="botonera">
+          <button class="accion b-verde" id="btnPasar" type="button">Pasar palabras</button>
+          <button class="accion b-linea" id="btnPausar" type="button">Pausar</button>
+          <button class="accion b-ambar" id="btnEscuchar" type="button">Escuchar la palabra</button>
+        </div>
+
+        <div class="tarjeta-palabra">
+          <span class="palabra" id="palabraGrande" aria-live="polite">el</span>
+          <p class="pista" id="pistaPalabra">Toca «Pasar palabras» y lee cada una en voz alta.</p>
+        </div>
+        <p class="contador-palabras" id="contadorPalabras">Palabra 1 de 10</p>
+
+        <h3 style="font-family: var(--letra-señal); color: var(--verde-oscuro); font-size: 1.05rem; margin: 24px 0 4px">
+          Todas las palabras del grupo
+        </h3>
+        <p class="intro" style="margin-bottom: 10px">Toca cualquier palabra para escucharla.</p>
+        <div class="galeria" id="galeria"></div>
+
+        <div class="buscar-caja">
+          <h3>Encuentra la palabra</h3>
+          <p class="objetivo" id="objetivoTexto">Toca la palabra que dice <strong id="objetivoPalabra">el</strong></p>
+          <div class="opciones-palabra" id="opcionesPalabra"></div>
+          <p class="marcador" id="marcadorBuscar">Aciertos: 0 de 0</p>
+          <div class="botonera" style="margin: 14px 0 0">
+            <button class="accion b-linea" id="btnOtraPalabra" type="button">Otra palabra</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- ══════════ ESTACIÓN 2 ══════════ -->
+      <section class="panel" id="panel-2" role="tabpanel" aria-labelledby="tab-2" hidden>
+        <h2>Señales y carteles</h2>
+        <p class="intro">
+          Estas son palabras que se leen todos los días en la calle, en la tienda y en el trabajo. Lee la señal en voz alta y
+          escoge lo que significa.
+        </p>
+
+        <div class="placa placa-verde" id="placa">SALIDA</div>
+        <p class="lugar-señal" id="lugarSeñal">Se ve en la puerta de una tienda.</p>
+
+        <div class="opciones-señal" id="opcionesSeñal"></div>
+        <div class="aviso" id="avisoSeñal" hidden></div>
+
+        <div class="botonera" style="margin: 18px 0 0">
+          <button class="accion b-verde" id="btnSiguienteSeñal" type="button">Siguiente señal</button>
+          <button class="accion b-ambar" id="btnEscucharSeñal" type="button">Escuchar la señal</button>
+        </div>
+        <p class="marcador" id="marcadorSeñal">Señal 1 de 16 · Aciertos: 0</p>
+      </section>
+
+      <!-- ══════════ ESTACIÓN 3 ══════════ -->
+      <section class="panel" id="panel-3" role="tabpanel" aria-labelledby="tab-3" hidden>
+        <h2>Lectura repetida</h2>
+        <p class="intro">
+          Lee el mismo texto tres veces. La primera vez cuesta un poco; la tercera vez sale mucho mejor. Eso es exactamente lo
+          que se busca. El reloj es solo para ver tu propio avance, no para competir con nadie.
+        </p>
+
+        <div class="controles">
+          <div class="campo">
+            <span class="etiqueta" id="et-texto">Texto</span>
+            <select id="selTexto" aria-labelledby="et-texto"></select>
+          </div>
+          <div class="ajuste-letra">
+            <span class="etiqueta" id="et-letra" style="width: 100%">Tamaño de letra</span>
+            <button type="button" id="btnLetraMenos" aria-label="Reducir el tamaño de la letra">A−</button>
+            <button type="button" id="btnLetraMas" aria-label="Aumentar el tamaño de la letra">A+</button>
+          </div>
+        </div>
+
+        <h3 class="sub-paso">Primero: deja que la computadora marque el ritmo</h3>
+        <p class="intro">
+          La guía va marcando las palabras una por una. Muévela hasta un ritmo que te resulte cómodo, aunque sea muy lento, y
+          lee en voz alta cada palabra marcada.
+        </p>
+
+        <div class="guia-caja" id="botoneraGuia">
+          <div class="campo" style="margin-bottom: 12px">
+            <span class="etiqueta" id="et-vel">Velocidad de la guía</span>
+            <input
+              type="range"
+              id="rangoVel"
+              min="12"
+              max="130"
+              step="2"
+              value="30"
+              aria-labelledby="et-vel"
+              aria-describedby="lecturaVel"
+            />
+            <div class="escala-vel" aria-hidden="true">
+              <span>Lentísimo</span>
+              <span>Normal</span>
+            </div>
+            <p class="lectura-vel" id="lecturaVel" aria-live="polite">
+              Muy despacio · 30 palabras por minuto
+              <span class="detalle">Dos segundos en cada palabra.</span>
+            </p>
+          </div>
+
+          <div class="campo" style="margin-bottom: 14px">
+            <span class="etiqueta" id="et-marca">Qué se marca cada vez</span>
+            <select id="selMarca" aria-labelledby="et-marca">
+              <option value="palabra" selected>Una palabra a la vez</option>
+              <option value="oracion">Una oración completa</option>
+            </select>
+          </div>
+
+          <div class="botonera" style="margin-bottom: 0">
+            <button class="accion b-verde" id="btnGuiar" type="button">Empezar la guía</button>
+            <button class="accion b-ambar" id="btnPausaGuia" type="button" disabled>Pausar</button>
+            <button class="accion b-linea" id="btnDetenerGuia" type="button">Volver al inicio</button>
+          </div>
+          <p class="estado-guia" id="estadoGuia">
+            Mueve el deslizador hasta encontrar tu ritmo. Puedes cambiarlo mientras lees.
+          </p>
+        </div>
+
+        <div id="texto"></div>
+
+        <h3 class="sub-paso">Después: lee tú solo, con el reloj</h3>
+        <p class="intro">
+          Cuando ya te sientas seguro con la guía, léelo tú solo. El reloj no te apura: solo guarda tu tiempo para que veas
+          cómo mejoras de una lectura a otra.
+        </p>
+
+        <div class="botonera" id="botoneraCrono">
+          <button class="accion b-verde" id="btnEmpecé" type="button">Empecé a leer</button>
+          <button class="accion b-ambar" id="btnTerminé" type="button" disabled>Terminé</button>
+          <button class="accion b-linea" id="btnBorrarIntentos" type="button">Borrar mis intentos</button>
+        </div>
+
+        <div class="crono-caja" id="cronoCaja">
+          <p class="crono" id="crono" aria-live="off">0:00</p>
+          <p class="crono-nota" id="cronoNota">Toca «Empecé a leer», lee el texto en voz alta y luego toca «Terminé».</p>
+          <p style="margin: 0; font-weight: 700; color: var(--verde-oscuro)" id="conteoPalabras">El texto tiene 0 palabras.</p>
+        </div>
+
+        <table id="tablaIntentos">
+          <caption>Mis intentos con este texto</caption>
+          <thead>
+            <tr>
+              <th scope="col">Intento</th>
+              <th scope="col">Tiempo</th>
+              <th scope="col">Palabras por minuto</th>
+              <th scope="col">Comentario</th>
+            </tr>
+          </thead>
+          <tbody id="cuerpoIntentos">
+            <tr>
+              <td>—</td>
+              <td>—</td>
+              <td>—</td>
+              <td>Todavía no hay intentos registrados.</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="botonera" style="margin-top: 18px">
+          <button class="accion b-linea" id="btnVerPreguntas" type="button">Ver las preguntas del texto</button>
+        </div>
+
+        <div class="preguntas" id="preguntas" hidden>
+          <h3>¿Qué dice el texto?</h3>
+          <div id="listaPreguntas"></div>
+          <button class="accion b-verde" id="btnRevisar" type="button">Revisar mis respuestas</button>
+          <p class="resultado" id="resultadoPreg" hidden></p>
+        </div>
+      </section>
+
+      <details class="nota">
+        <summary>Nota para el docente</summary>
+        <div class="cuerpo">
+          <p style="margin-top: 0">
+            Este recurso desarrolla el objetivo de la Lección 2.3: reconocimiento automático de al menos cuarenta palabras de
+            uso frecuente y fluidez inicial. Sugerencias de uso en clase:
+          </p>
+          <ul>
+            <li><strong>Estación 1:</strong> comience con «Muy despacio» y baje el tiempo por palabra solo cuando el estudiante lea el grupo completo sin vacilar. La actividad «Encuentra la palabra» usa distractores visualmente parecidos (por, para, pero) para entrenar la discriminación visual.</li>
+            <li><strong>Estación 2:</strong> el vocabulario de señales es transferible de inmediato a la vida diaria; conviene pedir al estudiante que fotografíe o describa señales que vea camino a casa.</li>
+            <li><strong>Estación 3:</strong> protocolo clásico de lectura repetida. Tres lecturas del mismo texto en la misma sesión. El registro de intentos es autorreferido: el estudiante compite consigo mismo, nunca con el grupo. Si el estudiante lee más lento en el segundo intento, no corresponde señalarlo como retroceso.</li>
+            <li>El botón «Escuchar» usa la voz del navegador. Si el dispositivo no tiene voz en español instalada, la actividad funciona igual sin audio.</li>
+            <li>Los intentos se guardan solo mientras la página esté abierta. Si necesita conservarlos, pida al estudiante que anote los tiempos en su cuaderno antes de cerrar.</li>
+          </ul>
+        </div>
+      </details>
+
+      <footer class="pie">
+        <p style="margin: 0 0 6px">
+          Creado por José M. Fernández, ABE/ASE Math Master Teacher, Harry S. Truman College — City Colleges of Chicago.
+        </p>
+        <p style="margin: 0">
+          Obra bajo licencia
+          <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.es" rel="license">Creative Commons Atribución-NoComercial-CompartirIgual 4.0 Internacional (CC BY-NC-SA 4.0)</a>.
+        </p>
+      </footer>
+    </div>
+
+    <script>
+      (function () {
+        'use strict';
+
+        /* ═══════════ DATOS ═══════════ */
+
+        var GRUPOS = [
+          { nombre: 'Grupo 1 · artículos y enlaces', palabras: ['el', 'la', 'los', 'las', 'un', 'una', 'de', 'del', 'en', 'y'] },
+          { nombre: 'Grupo 2 · preguntas y respuestas', palabras: ['a', 'que', 'es', 'son', 'no', 'sí', 'por', 'para', 'con', 'sin'] },
+          { nombre: 'Grupo 3 · las personas', palabras: ['mi', 'tu', 'su', 'yo', 'tú', 'él', 'ella', 'me', 'te', 'se'] },
+          { nombre: 'Grupo 4 · comparar y unir', palabras: ['al', 'lo', 'le', 'más', 'pero', 'como', 'cuando', 'muy', 'también', 'hay'] },
+          { nombre: 'Grupo 5 · lugar y tiempo', palabras: ['aquí', 'allí', 'hoy', 'ahora', 'todo', 'nada', 'bien', 'está', 'ver', 'ir'] }
+        ];
+
+        var TODAS = [];
+        GRUPOS.forEach(function (g) {
+          g.palabras.forEach(function (p) { TODAS.push(p); });
+        });
+
+        // Distractores visualmente parecidos, para entrenar discriminación
+        var PARECIDAS = {
+          el: ['él', 'la', 'en'], la: ['el', 'las', 'lo'], los: ['las', 'lo', 'dos'],
+          las: ['los', 'la', 'le'], un: ['una', 'en', 'un'], una: ['un', 'uno', 'nada'],
+          de: ['del', 'te', 'me'], del: ['de', 'el', 'dele'], en: ['el', 'un', 'es'],
+          y: ['ya', 'a', 'yo'], a: ['al', 'ha', 'y'], que: ['qué', 'quien', 'aquí'],
+          es: ['en', 'ese', 'son'], son: ['sin', 'con', 'sus'], no: ['nos', 'un', 'na'],
+          sí: ['si', 'su', 'se'], por: ['para', 'pero', 'con'], para: ['por', 'pero', 'par'],
+          con: ['como', 'son', 'por'], sin: ['son', 'si', 'san'], mi: ['mí', 'me', 'ni'],
+          tu: ['tú', 'te', 'su'], su: ['sus', 'tu', 'se'], yo: ['ya', 'lo', 'y'],
+          tú: ['tu', 'te', 'yo'], 'él': ['el', 'ella', 'le'], ella: ['él', 'ellas', 'ello'],
+          me: ['mi', 'te', 'de'], te: ['te', 'tu', 'me'], se: ['sé', 'te', 'su'],
+          al: ['el', 'a', 'la'], lo: ['los', 'la', 'le'], le: ['la', 'lo', 'les'],
+          'más': ['mas', 'mes', 'nos'], pero: ['pero', 'para', 'por'], como: ['con', 'cómo', 'coma'],
+          cuando: ['cuanto', 'cuándo', 'cuarto'], muy: ['mi', 'muy', 'hay'],
+          'también': ['tampoco', 'temblor', 'tan'], hay: ['ahí', 'hoy', 'ay'],
+          'aquí': ['allí', 'aquel', 'ahí'], 'allí': ['aquí', 'ella', 'allá'],
+          hoy: ['hay', 'voy', 'soy'], ahora: ['ahorra', 'hora', 'ahí'],
+          todo: ['todos', 'toda', 'tono'], nada: ['nadie', 'cada', 'nada'],
+          bien: ['ben', 'quien', 'bien'], 'está': ['esta', 'ésta', 'estás'],
+          ver: ['ser', 'ver', 'vez'], ir: ['él', 'ir', 'si']
+        };
+
+        var SEÑALES = [
+          { texto: 'SALIDA', tipo: 'placa-verde', lugar: 'Se ve arriba de una puerta, en una tienda o un edificio.',
+            ops: ['Por aquí se sale del lugar.', 'Por aquí se entra al lugar.', 'Aquí se paga la cuenta.'], ok: 0 },
+          { texto: 'ENTRADA', tipo: 'placa-azul', lugar: 'Se ve en la puerta principal de un edificio.',
+            ops: ['Por aquí se sale del lugar.', 'Por aquí se entra al lugar.', 'Aquí no se puede pasar.'], ok: 1 },
+          { texto: 'NO FUMAR', tipo: 'placa-roja', lugar: 'Se ve en hospitales, escuelas y oficinas.',
+            ops: ['Aquí se puede fumar.', 'Está prohibido fumar en este lugar.', 'Aquí se venden cigarros.'], ok: 1 },
+          { texto: 'POR FAVOR, HAGA FILA', tipo: 'placa-blanca', lugar: 'Se ve en un banco o en una oficina de gobierno.',
+            ops: ['Espere su turno en la fila.', 'Puede pasar sin esperar.', 'La oficina está cerrada.'], ok: 0 },
+          { texto: 'EMPUJE', tipo: 'placa-blanca', lugar: 'Se ve en la puerta de una tienda o un restaurante.',
+            ops: ['Hale la puerta hacia usted.', 'Empuje la puerta hacia adelante.', 'La puerta está cerrada con llave.'], ok: 1 },
+          { texto: 'JALE', tipo: 'placa-blanca', lugar: 'Se ve del otro lado de la misma puerta.',
+            ops: ['Hale la puerta hacia usted.', 'Empuje la puerta hacia adelante.', 'Toque el timbre.'], ok: 0 },
+          { texto: 'ABIERTO', tipo: 'placa-verde', lugar: 'Se ve en la vidriera de un negocio.',
+            ops: ['El negocio está atendiendo.', 'El negocio está cerrado.', 'El negocio se mudó.'], ok: 0 },
+          { texto: 'CERRADO', tipo: 'placa-roja', lugar: 'Se ve en la vidriera de un negocio.',
+            ops: ['Puede entrar ahora.', 'El negocio no está atendiendo.', 'Hay descuentos hoy.'], ok: 1 },
+          { texto: 'ALTO', tipo: 'placa-roja', lugar: 'Se ve en la esquina de una calle.',
+            ops: ['Siga sin parar.', 'Pare completamente antes de seguir.', 'Doble a la derecha.'], ok: 1 },
+          { texto: 'PELIGRO', tipo: 'placa-roja', lugar: 'Se ve en obras de construcción y áreas de máquinas.',
+            ops: ['Aquí hay riesgo. No se acerque.', 'Aquí puede descansar.', 'Aquí se entrega el correo.'], ok: 0 },
+          { texto: 'PISO MOJADO', tipo: 'placa-ambar', lugar: 'Se ve en el piso de un pasillo o un baño.',
+            ops: ['El piso está seco y limpio.', 'Camine con cuidado, puede resbalar.', 'No se puede caminar nunca más.'], ok: 1 },
+          { texto: 'BAÑOS', tipo: 'placa-azul', lugar: 'Se ve en un pasillo, con una flecha al lado.',
+            ops: ['Aquí están los servicios sanitarios.', 'Aquí está la cocina.', 'Aquí está la oficina.'], ok: 0 },
+          { texto: 'NO ESTACIONAR', tipo: 'placa-roja', lugar: 'Se ve en un poste, en la calle.',
+            ops: ['Puede dejar el carro aquí.', 'No puede dejar el carro aquí.', 'El estacionamiento es gratis.'], ok: 1 },
+          { texto: 'SALIDA DE EMERGENCIA', tipo: 'placa-verde', lugar: 'Se ve en pasillos de escuelas, cines y hospitales.',
+            ops: ['Puerta para salir si hay peligro.', 'Puerta para entrar cada día.', 'Puerta de la bodega.'], ok: 0 },
+          { texto: 'SOLO PERSONAL AUTORIZADO', tipo: 'placa-ambar', lugar: 'Se ve en la puerta de un almacén o una oficina.',
+            ops: ['Cualquier persona puede entrar.', 'Solo pueden entrar los que trabajan allí.', 'Aquí se hacen los pagos.'], ok: 1 },
+          { texto: 'PRIMEROS AUXILIOS', tipo: 'placa-verde', lugar: 'Se ve en una pared, con una cruz al lado.',
+            ops: ['Aquí hay ayuda si alguien se lastima.', 'Aquí se venden medicinas.', 'Aquí está la salida.'], ok: 0 }
+        ];
+
+        var LECTURAS = [
+          {
+            titulo: 'Un cartel en la puerta',
+            oraciones: [
+              'Hoy yo voy a la tienda con mi mamá.',
+              'La tienda está aquí, muy cerca de mi casa.',
+              'En la puerta hay un cartel que dice «Empuje».',
+              'Yo leo el cartel y empujo la puerta.',
+              'Mi mamá me dice: «Por favor, busca la leche».',
+              'La leche está allí, al lado de los huevos.'
+            ],
+            preguntas: [
+              { q: '¿Con quién va a la tienda?', op: ['Con su mamá', 'Con su hermano', 'Solo'], ok: 0 },
+              { q: '¿Qué dice el cartel de la puerta?', op: ['Salida', 'Empuje', 'Cerrado'], ok: 1 },
+              { q: '¿Dónde está la leche?', op: ['Al lado de los huevos', 'En la puerta', 'En la casa'], ok: 0 }
+            ]
+          },
+          {
+            titulo: 'En la esquina',
+            oraciones: [
+              'Tú y yo caminamos por la calle.',
+              'En la esquina hay una señal que dice «Alto».',
+              'Nosotros no cruzamos ahora.',
+              'Cuando el semáforo está en verde, sí podemos pasar.',
+              'Al final de la calle está la salida del parque.',
+              'Todo el mundo sale por esa puerta.'
+            ],
+            preguntas: [
+              { q: '¿Qué dice la señal de la esquina?', op: ['Alto', 'Salida', 'No fumar'], ok: 0 },
+              { q: '¿Cuándo pueden pasar?', op: ['Cuando el semáforo está en verde', 'Cuando no hay nadie', 'Nunca'], ok: 0 },
+              { q: '¿Qué hay al final de la calle?', op: ['Una tienda', 'La salida del parque', 'Un hospital'], ok: 1 }
+            ]
+          },
+          {
+            titulo: 'Mi casa',
+            oraciones: [
+              'Mi casa es pequeña, pero es muy bonita.',
+              'En la sala hay una mesa y dos sillas.',
+              'Yo estudio aquí todos los días.',
+              'Mi hermano lee un libro y mi papá ve la televisión.',
+              'Hoy no hay nadie más en la casa.',
+              'Todo está muy tranquilo.'
+            ],
+            preguntas: [
+              { q: '¿Cómo es la casa?', op: ['Grande y fea', 'Pequeña pero bonita', 'Nueva y grande'], ok: 1 },
+              { q: '¿Qué hay en la sala?', op: ['Una mesa y dos sillas', 'Una cama', 'Tres mesas'], ok: 0 },
+              { q: '¿Qué hace el hermano?', op: ['Ve la televisión', 'Lee un libro', 'Estudia'], ok: 1 }
+            ]
+          },
+          {
+            titulo: 'El primer día de trabajo',
+            oraciones: [
+              'Hoy es mi primer día en el trabajo nuevo.',
+              'En la entrada hay un cartel que dice «Solo personal autorizado».',
+              'Yo tengo mi tarjeta y sí puedo pasar.',
+              'Mi jefe me dice: «Por favor, ven aquí».',
+              'Él me explica todo con mucha calma.',
+              'Al final del día, yo salgo por la puerta que dice «Salida».'
+            ],
+            preguntas: [
+              { q: '¿Qué dice el cartel de la entrada?', op: ['Salida', 'No fumar', 'Solo personal autorizado'], ok: 2 },
+              { q: '¿Por qué sí puede pasar?', op: ['Porque tiene su tarjeta', 'Porque llegó temprano', 'Porque conoce al jefe'], ok: 0 },
+              { q: '¿Cómo le explica el jefe?', op: ['Con mucha calma', 'Con mucha prisa', 'No le explica nada'], ok: 0 }
+            ]
+          }
+        ];
+
+        /* ═══════════ UTILIDADES ═══════════ */
+        var $ = function (id) { return document.getElementById(id); };
+
+        function mezclar(arr) {
+          var a = arr.slice();
+          for (var i = a.length - 1; i > 0; i--) {
+            var j = Math.floor(Math.random() * (i + 1));
+            var t = a[i]; a[i] = a[j]; a[j] = t;
+          }
+          return a;
+        }
+
+        var vozES = null;
+        function elegirVoz() {
+          if (!('speechSynthesis' in window)) return;
+          var voces = window.speechSynthesis.getVoices();
+          for (var i = 0; i < voces.length; i++) {
+            if (voces[i].lang && voces[i].lang.toLowerCase().indexOf('es') === 0) { vozES = voces[i]; break; }
+          }
+        }
+        if ('speechSynthesis' in window) {
+          elegirVoz();
+          window.speechSynthesis.onvoiceschanged = elegirVoz;
+        }
+        function decir(texto) {
+          if (!('speechSynthesis' in window)) return;
+          try {
+            window.speechSynthesis.cancel();
+            var u = new SpeechSynthesisUtterance(texto);
+            u.lang = 'es-US';
+            u.rate = 0.78;
+            if (vozES) u.voice = vozES;
+            window.speechSynthesis.speak(u);
+          } catch (e) { /* sin audio, la actividad sigue funcionando */ }
+        }
+
+        /* ═══════════ NAVEGACIÓN DE ESTACIONES ═══════════ */
+        var tabs = [$('tab-1'), $('tab-2'), $('tab-3')];
+        var paneles = [$('panel-1'), $('panel-2'), $('panel-3')];
+
+        tabs.forEach(function (t, i) {
+          t.addEventListener('click', function () { abrirEstacion(i); });
+          t.addEventListener('keydown', function (e) {
+            if (e.key === 'ArrowRight') { abrirEstacion((i + 1) % 3); tabs[(i + 1) % 3].focus(); }
+            if (e.key === 'ArrowLeft') { abrirEstacion((i + 2) % 3); tabs[(i + 2) % 3].focus(); }
+          });
+        });
+
+        function abrirEstacion(n) {
+          detenerPase();
+          detenerGuia();
+          tabs.forEach(function (t, i) { t.setAttribute('aria-selected', i === n ? 'true' : 'false'); });
+          paneles.forEach(function (p, i) { p.hidden = i !== n; });
+        }
+
+        /* ═══════════ ESTACIÓN 1 · PALABRAS ═══════════ */
+        var grupoActual = 0, iPalabra = 0, tempPase = null;
+
+        GRUPOS.forEach(function (g, i) {
+          var o = document.createElement('option');
+          o.value = i; o.textContent = g.nombre;
+          $('selGrupo').appendChild(o);
+        });
+
+        function palabrasGrupo() { return GRUPOS[grupoActual].palabras; }
+
+        function pintarPalabra() {
+          var lista = palabrasGrupo();
+          $('palabraGrande').textContent = lista[iPalabra];
+          $('contadorPalabras').textContent = 'Palabra ' + (iPalabra + 1) + ' de ' + lista.length;
+        }
+
+        function pintarGaleria() {
+          var g = $('galeria');
+          g.innerHTML = '';
+          palabrasGrupo().forEach(function (p) {
+            var b = document.createElement('button');
+            b.type = 'button';
+            b.className = 'ficha';
+            b.textContent = p;
+            b.addEventListener('click', function () {
+              decir(p);
+              b.classList.add('dicha');
+              setTimeout(function () { b.classList.remove('dicha'); }, 900);
+            });
+            g.appendChild(b);
+          });
+        }
+
+        function detenerPase() {
+          if (tempPase) { clearInterval(tempPase); tempPase = null; }
+          $('btnPasar').textContent = 'Pasar palabras';
+        }
+
+        $('btnPasar').addEventListener('click', function () {
+          if (tempPase) { detenerPase(); return; }
+          var ms = parseInt($('selRitmo').value, 10);
+          $('pistaPalabra').textContent = 'Lee cada palabra en voz alta, sin deletrear.';
+          $('btnPasar').textContent = 'Detener';
+          pintarPalabra();
+          tempPase = setInterval(function () {
+            iPalabra++;
+            if (iPalabra >= palabrasGrupo().length) {
+              iPalabra = 0;
+              detenerPase();
+              $('pistaPalabra').textContent = 'Terminaste el grupo. Puedes repetirlo o pasar al siguiente.';
+            }
+            pintarPalabra();
+          }, ms);
+        });
+
+        $('btnPausar').addEventListener('click', detenerPase);
+        $('btnEscuchar').addEventListener('click', function () { decir($('palabraGrande').textContent); });
+
+        $('selGrupo').addEventListener('change', function () {
+          detenerPase();
+          grupoActual = parseInt(this.value, 10);
+          iPalabra = 0;
+          pintarPalabra();
+          pintarGaleria();
+          nuevaBusqueda();
+        });
+
+        /* ─── Encuentra la palabra ─── */
+        var aciertosBuscar = 0, intentosBuscar = 0, objetivo = '';
+
+        function distractores(palabra) {
+          var base = (PARECIDAS[palabra] || []).filter(function (p) { return p !== palabra; });
+          var extra = TODAS.filter(function (p) { return p !== palabra && base.indexOf(p) === -1; });
+          var res = base.slice(0, 3);
+          extra = mezclar(extra);
+          while (res.length < 3 && extra.length) { res.push(extra.pop()); }
+          return res;
+        }
+
+        function nuevaBusqueda() {
+          var lista = palabrasGrupo();
+          objetivo = lista[Math.floor(Math.random() * lista.length)];
+          $('objetivoPalabra').textContent = objetivo;
+          var ops = mezclar(distractores(objetivo).concat([objetivo]));
+          var cont = $('opcionesPalabra');
+          cont.innerHTML = '';
+          ops.forEach(function (p) {
+            var b = document.createElement('button');
+            b.type = 'button';
+            b.className = 'op-palabra';
+            b.textContent = p;
+            b.addEventListener('click', function () { responderBusqueda(b, p); });
+            cont.appendChild(b);
+          });
+        }
+
+        function responderBusqueda(boton, palabra) {
+          var botones = $('opcionesPalabra').querySelectorAll('.op-palabra');
+          if (boton.disabled) return;
+          intentosBuscar++;
+          if (palabra === objetivo) { aciertosBuscar++; }
+          for (var i = 0; i < botones.length; i++) {
+            botones[i].disabled = true;
+            if (botones[i].textContent === objetivo) botones[i].classList.add('bien');
+            else if (botones[i] === boton) botones[i].classList.add('mal');
+          }
+          $('marcadorBuscar').textContent = 'Aciertos: ' + aciertosBuscar + ' de ' + intentosBuscar;
+          decir(objetivo);
+          setTimeout(nuevaBusqueda, 1400);
+        }
+
+        $('btnOtraPalabra').addEventListener('click', nuevaBusqueda);
+
+        /* ═══════════ ESTACIÓN 2 · SEÑALES ═══════════ */
+        var ordenSeñales = mezclar(SEÑALES.slice()), iSeñal = 0, aciertosSeñal = 0, señalRespondida = false;
+
+        function pintarSeñal() {
+          var s = ordenSeñales[iSeñal];
+          señalRespondida = false;
+          var placa = $('placa');
+          placa.className = 'placa ' + s.tipo;
+          placa.textContent = s.texto;
+          $('lugarSeñal').textContent = s.lugar;
+          $('avisoSeñal').hidden = true;
+          var cont = $('opcionesSeñal');
+          cont.innerHTML = '';
+          var idx = mezclar([0, 1, 2]);
+          idx.forEach(function (j) {
+            var b = document.createElement('button');
+            b.type = 'button';
+            b.className = 'op-señal';
+            b.textContent = s.ops[j];
+            b.addEventListener('click', function () { responderSeñal(b, j === s.ok, s); });
+            cont.appendChild(b);
+          });
+          $('marcadorSeñal').textContent = 'Señal ' + (iSeñal + 1) + ' de ' + ordenSeñales.length + ' · Aciertos: ' + aciertosSeñal;
+        }
+
+        function responderSeñal(boton, correcta, s) {
+          if (señalRespondida) return;
+          señalRespondida = true;
+          if (correcta) aciertosSeñal++;
+          var botones = $('opcionesSeñal').querySelectorAll('.op-señal');
+          for (var i = 0; i < botones.length; i++) {
+            botones[i].disabled = true;
+            if (botones[i].textContent === s.ops[s.ok]) botones[i].classList.add('bien');
+            else if (botones[i] === boton) botones[i].classList.add('mal');
+          }
+          var aviso = $('avisoSeñal');
+          aviso.textContent = correcta
+            ? 'Correcto. «' + s.texto + '» significa: ' + s.ops[s.ok]
+            : 'Casi. «' + s.texto + '» significa: ' + s.ops[s.ok];
+          aviso.hidden = false;
+          $('marcadorSeñal').textContent = 'Señal ' + (iSeñal + 1) + ' de ' + ordenSeñales.length + ' · Aciertos: ' + aciertosSeñal;
+        }
+
+        $('btnSiguienteSeñal').addEventListener('click', function () {
+          iSeñal = (iSeñal + 1) % ordenSeñales.length;
+          if (iSeñal === 0) ordenSeñales = mezclar(SEÑALES.slice());
+          pintarSeñal();
+        });
+        $('btnEscucharSeñal').addEventListener('click', function () { decir($('placa').textContent); });
+
+        /* ═══════════ ESTACIÓN 3 · LECTURA REPETIDA ═══════════ */
+        var iTexto = 0, spans = [], oraciones = [], totalPalabras = 0;
+        var t0 = 0, tempCrono = null, tempGuia = null;
+        var unidades = [], iUnidad = 0, guiaCorriendo = false, guiaEnPausa = false;
+        var intentos = {};
+        var tamaños = [1.15, 1.3, 1.5, 1.75, 2.05, 2.4], iTam = 2;
+
+        LECTURAS.forEach(function (l, i) {
+          var o = document.createElement('option');
+          o.value = i; o.textContent = l.titulo;
+          $('selTexto').appendChild(o);
+        });
+
+        function cargarTexto() {
+          var l = LECTURAS[iTexto];
+          var cont = $('texto');
+          cont.innerHTML = '';
+          spans = [];
+
+          var h = document.createElement('p');
+          h.className = 'titulo-lectura';
+          h.textContent = l.titulo;
+          cont.appendChild(h);
+
+          var p = document.createElement('p');
+          oraciones = [];
+          l.oraciones.forEach(function (o) {
+            var grupo = [];
+            o.split(/\s+/).forEach(function (w) {
+              var s = document.createElement('span');
+              s.className = 'word';
+              s.textContent = w + ' ';
+              p.appendChild(s);
+              spans.push(s);
+              grupo.push(s);
+            });
+            oraciones.push(grupo);
+          });
+          cont.appendChild(p);
+
+          totalPalabras = spans.length;
+          $('conteoPalabras').textContent = 'El texto tiene ' + totalPalabras + ' palabras.';
+          if (!intentos[iTexto]) intentos[iTexto] = [];
+          pintarIntentos();
+          $('preguntas').hidden = true;
+          $('resultadoPreg').hidden = true;
+          reiniciarCrono();
+        }
+
+        function reiniciarCrono() {
+          if (tempCrono) { clearInterval(tempCrono); tempCrono = null; }
+          $('crono').textContent = '0:00';
+          $('btnEmpecé').disabled = false;
+          $('btnTerminé').disabled = true;
+        }
+
+        function formatoTiempo(seg) {
+          var m = Math.floor(seg / 60), s = Math.round(seg % 60);
+          if (s === 60) { m++; s = 0; }
+          return m + ':' + (s < 10 ? '0' : '') + s;
+        }
+
+        $('btnEmpecé').addEventListener('click', function () {
+          detenerGuia();
+          spans.forEach(function (s) { s.classList.remove('marcada'); });
+          t0 = Date.now();
+          $('btnEmpecé').disabled = true;
+          $('btnTerminé').disabled = false;
+          $('cronoNota').textContent = 'Lee tranquilo. Cuando llegues al final, toca «Terminé».';
+          tempCrono = setInterval(function () {
+            $('crono').textContent = formatoTiempo((Date.now() - t0) / 1000);
+          }, 200);
+        });
+
+        $('btnTerminé').addEventListener('click', function () {
+          if (!tempCrono) return;
+          clearInterval(tempCrono); tempCrono = null;
+          var seg = (Date.now() - t0) / 1000;
+          if (seg < 3) seg = 3;
+          var ppm = Math.round((totalPalabras / seg) * 60);
+          var lista = intentos[iTexto];
+          var comentario;
+          if (lista.length === 0) {
+            comentario = 'Primera lectura. Este es tu punto de partida.';
+          } else {
+            var anterior = lista[lista.length - 1].seg;
+            var dif = anterior - seg;
+            if (dif >= 1) comentario = 'Leíste ' + Math.round(dif) + ' segundos más rápido que antes. Bien hecho.';
+            else if (dif <= -1) comentario = 'Esta vez tomó un poco más. Está bien: leer con calma también cuenta.';
+            else comentario = 'Tiempo muy parecido al anterior. Vas sosteniendo el ritmo.';
+          }
+          lista.push({ seg: seg, ppm: ppm, comentario: comentario });
+          pintarIntentos();
+          $('crono').textContent = formatoTiempo(seg);
+          $('btnEmpecé').disabled = false;
+          $('btnTerminé').disabled = true;
+          $('cronoNota').textContent = lista.length < 3
+            ? 'Muy bien. Ahora lee el mismo texto otra vez: la lectura ' + (lista.length + 1) + ' de 3.'
+            : 'Completaste las tres lecturas de este texto. Ahora responde las preguntas.';
+          if (lista.length >= 1) mostrarPreguntas();
+        });
+
+        $('btnBorrarIntentos').addEventListener('click', function () {
+          intentos[iTexto] = [];
+          pintarIntentos();
+          reiniciarCrono();
+          $('cronoNota').textContent = 'Toca «Empecé a leer», lee el texto en voz alta y luego toca «Terminé».';
+        });
+
+        function pintarIntentos() {
+          var tb = $('cuerpoIntentos');
+          tb.innerHTML = '';
+          var lista = intentos[iTexto] || [];
+          if (lista.length === 0) {
+            var tr0 = document.createElement('tr');
+            tr0.innerHTML = '<td>—</td><td>—</td><td>—</td><td>Todavía no hay intentos registrados.</td>';
+            tb.appendChild(tr0);
+            return;
+          }
+          lista.forEach(function (it, i) {
+            var tr = document.createElement('tr');
+            var c1 = document.createElement('td'); c1.textContent = 'Lectura ' + (i + 1);
+            var c2 = document.createElement('td'); c2.textContent = formatoTiempo(it.seg);
+            var c3 = document.createElement('td'); c3.textContent = it.ppm;
+            var c4 = document.createElement('td'); c4.textContent = it.comentario;
+            tr.appendChild(c1); tr.appendChild(c2); tr.appendChild(c3); tr.appendChild(c4);
+            tb.appendChild(tr);
+          });
+        }
+
+        /* ─── Modo guiado: ritmo continuo ─── */
+        function ppmActual() { return parseInt($('rangoVel').value, 10); }
+
+        function nombreRitmo(ppm) {
+          if (ppm <= 20) return 'Lentísimo';
+          if (ppm <= 35) return 'Muy despacio';
+          if (ppm <= 55) return 'Despacio';
+          if (ppm <= 80) return 'Tranquilo';
+          if (ppm <= 105) return 'Normal';
+          return 'Ágil';
+        }
+
+        function pintarVelocidad() {
+          var ppm = ppmActual();
+          var seg = 60 / ppm;
+          var texto = seg >= 1
+            ? seg.toFixed(1).replace('.', ',') + ' segundos en cada palabra.'
+            : Math.round(seg * 1000) + ' milésimas en cada palabra.';
+          $('lecturaVel').innerHTML =
+            nombreRitmo(ppm) + ' · ' + ppm + ' palabras por minuto' +
+            '<span class="detalle">' + texto + '</span>';
+        }
+
+        function limpiarMarcas() {
+          spans.forEach(function (s) { s.classList.remove('marcada'); s.classList.remove('leida'); });
+        }
+
+        function construirUnidades() {
+          unidades = [];
+          if ($('selMarca').value === 'oracion') {
+            oraciones.forEach(function (g) { unidades.push({ spans: g, n: g.length }); });
+          } else {
+            spans.forEach(function (s) { unidades.push({ spans: [s], n: 1 }); });
+          }
+        }
+
+        function desplazarA(span) {
+          var c = $('texto').getBoundingClientRect(), w = span.getBoundingClientRect();
+          if (w.bottom > c.bottom - 20 || w.top < c.top + 20) span.scrollIntoView({ block: 'center' });
+        }
+
+        function pasoGuia() {
+          if (iUnidad > 0 && unidades[iUnidad - 1]) {
+            unidades[iUnidad - 1].spans.forEach(function (s) {
+              s.classList.remove('marcada');
+              s.classList.add('leida');
+            });
+          }
+          if (iUnidad >= unidades.length) { terminarGuia(); return; }
+          var u = unidades[iUnidad];
+          u.spans.forEach(function (s) { s.classList.add('marcada'); });
+          desplazarA(u.spans[0]);
+          iUnidad++;
+          tempGuia = setTimeout(pasoGuia, (60000 / ppmActual()) * u.n);
+        }
+
+        function terminarGuia() {
+          if (tempGuia) { clearTimeout(tempGuia); tempGuia = null; }
+          guiaCorriendo = false;
+          guiaEnPausa = false;
+          $('btnGuiar').textContent = 'Empezar la guía';
+          $('btnPausaGuia').disabled = true;
+          $('btnPausaGuia').textContent = 'Pausar';
+          $('estadoGuia').textContent = 'Llegaste al final del texto. Puedes repetirlo al mismo ritmo o subir un poco la velocidad.';
+          mostrarPreguntas();
+        }
+
+        function detenerGuia() {
+          if (tempGuia) { clearTimeout(tempGuia); tempGuia = null; }
+          guiaCorriendo = false;
+          guiaEnPausa = false;
+          iUnidad = 0;
+          limpiarMarcas();
+          if ($('btnGuiar')) {
+            $('btnGuiar').textContent = 'Empezar la guía';
+            $('btnPausaGuia').disabled = true;
+            $('btnPausaGuia').textContent = 'Pausar';
+          }
+        }
+
+        function arrancarGuia() {
+          detenerGuia();
+          construirUnidades();
+          guiaCorriendo = true;
+          $('btnGuiar').textContent = 'Empezar otra vez';
+          $('btnPausaGuia').disabled = false;
+          var n = 3;
+          $('estadoGuia').innerHTML = '<span class="cuenta-atras">Prepárate… ' + n + '</span>';
+          var cuenta = setInterval(function () {
+            n--;
+            if (n > 0) {
+              $('estadoGuia').innerHTML = '<span class="cuenta-atras">Prepárate… ' + n + '</span>';
+            } else {
+              clearInterval(cuenta);
+              $('estadoGuia').textContent = 'Sigue la palabra marcada con la vista y léela en voz alta. Puedes cambiar la velocidad ahora mismo.';
+              pasoGuia();
+            }
+          }, 1000);
+        }
+
+        $('btnGuiar').addEventListener('click', arrancarGuia);
+        $('btnDetenerGuia').addEventListener('click', function () {
+          detenerGuia();
+          $('estadoGuia').textContent = 'Volviste al principio del texto.';
+        });
+
+        $('btnPausaGuia').addEventListener('click', function () {
+          if (!guiaCorriendo) return;
+          if (!guiaEnPausa) {
+            if (tempGuia) { clearTimeout(tempGuia); tempGuia = null; }
+            guiaEnPausa = true;
+            this.textContent = 'Continuar';
+            $('estadoGuia').textContent = 'En pausa. Tómate el tiempo que necesites.';
+          } else {
+            guiaEnPausa = false;
+            this.textContent = 'Pausar';
+            $('estadoGuia').textContent = 'Sigue la palabra marcada con la vista y léela en voz alta.';
+            var u = unidades[iUnidad - 1];
+            tempGuia = setTimeout(pasoGuia, (60000 / ppmActual()) * (u ? u.n : 1));
+          }
+        });
+
+        $('rangoVel').addEventListener('input', pintarVelocidad);
+        $('selMarca').addEventListener('change', function () {
+          if (guiaCorriendo) detenerGuia();
+          $('estadoGuia').textContent = this.value === 'oracion'
+            ? 'Ahora se marca una oración completa cada vez. Sirve para leer con entonación.'
+            : 'Ahora se marca una palabra a la vez.';
+        });
+
+        $('selTexto').addEventListener('change', function () {
+          detenerGuia();
+          iTexto = parseInt(this.value, 10);
+          cargarTexto();
+        });
+
+        /* ─── Tamaño de letra ─── */
+        function aplicarTamaño() {
+          document.documentElement.style.setProperty('--tam-lectura', tamaños[iTam] + 'rem');
+        }
+        $('btnLetraMas').addEventListener('click', function () {
+          if (iTam < tamaños.length - 1) { iTam++; aplicarTamaño(); }
+        });
+        $('btnLetraMenos').addEventListener('click', function () {
+          if (iTam > 0) { iTam--; aplicarTamaño(); }
+        });
+
+        /* ─── Preguntas ─── */
+        function mostrarPreguntas() {
+          var l = LECTURAS[iTexto];
+          var cont = $('listaPreguntas');
+          cont.innerHTML = '';
+          l.preguntas.forEach(function (pr, i) {
+            var bloque = document.createElement('div');
+            bloque.className = 'bloque-preg';
+            var en = document.createElement('p');
+            en.className = 'enunciado';
+            en.textContent = (i + 1) + '. ' + pr.q;
+            bloque.appendChild(en);
+            pr.op.forEach(function (texto, j) {
+              var b = document.createElement('button');
+              b.type = 'button';
+              b.className = 'op-preg';
+              b.textContent = String.fromCharCode(65 + j) + '. ' + texto;
+              b.setAttribute('data-preg', i);
+              b.setAttribute('data-op', j);
+              b.addEventListener('click', function () {
+                var hermanos = cont.querySelectorAll('.op-preg[data-preg="' + i + '"]');
+                for (var k = 0; k < hermanos.length; k++) hermanos[k].classList.remove('elegida');
+                b.classList.add('elegida');
+              });
+              bloque.appendChild(b);
+            });
+            cont.appendChild(bloque);
+          });
+          $('preguntas').hidden = false;
+          $('resultadoPreg').hidden = true;
+          $('btnRevisar').disabled = false;
+        }
+
+        $('btnVerPreguntas').addEventListener('click', mostrarPreguntas);
+
+        $('btnRevisar').addEventListener('click', function () {
+          var l = LECTURAS[iTexto], cont = $('listaPreguntas'), aciertos = 0;
+          l.preguntas.forEach(function (pr, i) {
+            var botones = cont.querySelectorAll('.op-preg[data-preg="' + i + '"]');
+            var elegida = cont.querySelector('.op-preg.elegida[data-preg="' + i + '"]');
+            for (var k = 0; k < botones.length; k++) {
+              botones[k].disabled = true;
+              var j = parseInt(botones[k].getAttribute('data-op'), 10);
+              if (j === pr.ok) botones[k].classList.add('bien');
+              else if (elegida === botones[k]) botones[k].classList.add('mal');
+            }
+            if (elegida && parseInt(elegida.getAttribute('data-op'), 10) === pr.ok) aciertos++;
+          });
+          var total = l.preguntas.length;
+          var msg;
+          if (aciertos === total) msg = 'Respondiste ' + aciertos + ' de ' + total + '. Entendiste todo el texto. Puedes pasar al siguiente.';
+          else if (aciertos >= Math.ceil(total / 2)) msg = 'Respondiste ' + aciertos + ' de ' + total + '. Vas bien. Lee el texto una vez más y vuelve a intentarlo.';
+          else msg = 'Respondiste ' + aciertos + ' de ' + total + '. Lee el texto otra vez, despacio y en voz alta. Después las preguntas se entienden mejor.';
+          var r = $('resultadoPreg');
+          r.textContent = msg;
+          r.hidden = false;
+          this.disabled = true;
+        });
+
+        /* ═══════════ ARRANQUE ═══════════ */
+        pintarPalabra();
+        pintarGaleria();
+        nuevaBusqueda();
+        pintarSeñal();
+        cargarTexto();
+        aplicarTamaño();
+        pintarVelocidad();
+      })();
+    </script>
+  </body>
+</html>
